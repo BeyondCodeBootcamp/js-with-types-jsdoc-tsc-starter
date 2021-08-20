@@ -1,0 +1,32 @@
+{
+  "name": "jsdoc-typescript-starter",
+  "version": "1.0.0",
+  "description": "> A simple, but non-trivial example of getting the most from JSDoc + tsserver (Type Linting without TypeScript)",
+  "main": "types.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BeyondCodeBootcamp/jsdoc-typescript-starter.git"
+  },
+  "keywords": [],
+  "author": "AJ ONeal <coolaj86@gmail.com> (https://coolaj86.com/)",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/BeyondCodeBootcamp/jsdoc-typescript-starter/issues"
+  },
+  "homepage": "https://github.com/BeyondCodeBootcamp/jsdoc-typescript-starter#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.6.2"
+  },
+  "dependencies": {
+    "@root/async-router": "^1.0.9",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1"
+  }
+}
