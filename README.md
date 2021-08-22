@@ -11,11 +11,12 @@ This project has purposefully half-baked - meaning that errors exist on purpose
 
 ## Table of Contents
 
-<!-- TODO Key Benefits -->
+<!-- TODO Key Benefits, VS Code -->
 
 - Key Components
 - Key Configuration
 - Manual "From Scratch"
+- Vim Configuration
 
 ## Key Components
 
@@ -78,20 +79,20 @@ These **must be properly enumerated** in `tsconfig.json`:
 ## Key Configuration
 
 1. `include` - this section must enumerate your _local types_ and _source code_:
-   ```json
+   ```js
    {
-     "...",
-     "include": ["./types.js", "server.js", "lib/**/*.js"]
+       "...": "",
+       "include": ["./types.js", "server.js", "lib/**/*.js"]
    }
    ```
 2. `compilerOptions.typeRoots` should specify your _local overrides_ and
    _community type definitions_.
-   ```json
+   ```js
    {
        "compilerOptions": {
-           "typeRoots": [ "./typings", "./node_modules/@types" ],
+           "typeRoots": ["./typings", "./node_modules/@types"]
        },
-       "..."
+       "...": ""
    }
    ```
 3. `compilerOptions` must be changed from the default setting in order to make
@@ -116,9 +117,9 @@ These **must be properly enumerated** in `tsconfig.json`:
            // "baseUrl": "./",
            // "paths": {},
            // "rootDirs": [],
-           "..."
+           "...": ""
        },
-       "..."
+       "...": ""
    }
    ```
    - Leave `compilerOptions.lib` commented out or empty. \
@@ -133,10 +134,9 @@ These **must be properly enumerated** in `tsconfig.json`:
        "compilerOptions": {
 
            "noImplicitAny": true,
-           "..."
+           "...": ""
        },
-
-       "..."
+       "...": ""
    }
    ```
 
@@ -224,56 +224,25 @@ index 35fc786..979a70d 100644
  }
 ```
 
-Pay close attention to your `tsconfig.json`.
-
-```js
-{
-  "compilerOptions": {
-    "target": "ESNEXT",
-    "module": "commonjs",
-    // "lib": [],        // Leave this empty. All libs in 'target' will be loaded.
-    "allowJs": true ,
-    "checkJs": true ,
-    "noEmit": true,
-    "strict": true,
-    "noImplicitAny": true,
-    "alwaysStrict": true,
-    "noUnusedLocals": true,
-    // "baseUrl": "./",
-    // "paths": {},
-    // "rootDirs": [],
-    "typeRoots": [ "@types", "./node_modules/@types" ],
-    "esModuleInterop": true, // allow node-style require
-    "preserveSymlinks": false, // will work with basetag
-    "maxNodeModuleJsDepth": 20, // will resolve dependencies of dependencies
-  },
-  "include": ["./types.js", "server.js", "lib/**/*.js"],
-  "exclude": ["node_modules"]
-}
-```
-
-Especially:
-
-- `lib` should be commented out. Don't use this.
-- `compilerOptions.typeRoots: [ "@types", "./node_modules/@types" ]`, should
-  include both local and external type definitions
-- `include: ["**/*.js"]` should include ALL of your JavaScript files
-
 You may want to start with `"noImplicitAny": false` and change it to to
 `"noImplicitAny": true` once you've solved for all of the most basic errors.
 
-## See ALL Warnings & Errors
+## TypeScript Checker CLI
 
-Run `tsc` from the directory where `tsconfig.json` exists.
+`tsc` can show you the same errors that you'll see in VS Code or vim, but in all
+files across your project at once.
+
+To check that out, run `tsc` from the directory where `tsconfig.json` exists.
 
 ```bash
 tsc
 ```
 
-Make user that `include` is set properly to include all your code and JSDoc
-typse, and that `typeRoots` is set to include your type overrides.
+If you don't get error output, then ake user that `include` is set properly to
+include all your code and JSDoc types, and that `typeRoots` is set to include
+your type overrides.
 
-# Vim Users
+## Vim Configuration
 
 Assuming that you're using [`vim-ale`](https://webinstall.dev/vim-ale), the main
 option you need to modify is the list of linters.
