@@ -1,30 +1,227 @@
 # JSDoc-TypeScript + Node Starter
 
-> A simple, but non-trivial example of getting the most from JSDoc + tsserver (Type Linting without TypeScript)
+> A simple, but non-trivial example of getting the most from JSDoc + tsserver
+> (Type Linting without TypeScript)
 
-If you'd like to get the benefits of Type Linting without drinking the TypeScript Kool-Aid, you're in the right place.
+If you'd like to get the benefits of Type Linting without drinking the
+TypeScript Kool-Aid, you're in the right place.
 
-<!--
-This project has purposefully half-baked - so that you can see the type linting in action!
--->
+This project has purposefully half-baked - meaning that errors exist on purpose
+(with explanatory comments) - so that you can see the type linting in action!
 
-This project contains some configuration and example type files.
+## Table of Contents
+
+<!-- TODO Key Benefits -->
+
+- Key Components
+- Key Configuration
+- Manual "From Scratch"
 
 ## Key Components
 
+A typical project will look something like this:
+
 ```txt
 .
+├── server.js
+├── lib/
+│  ├── **/*.js
+│  └── **/*.d.ts
+├── node_modules/@types/ ("Definitely Typed" typings)
 ├── tsconfig.json (JSON5)
-├── @types
-│  └── express
+├── typings/
+│  └── express/
 │     └── index.d.ts (TypeScript definitions)
 └── types.js (global JSDOC)
 ```
 
+We could break this down into 4 key components, which must be referenced in your
+`tsconfig.json`:
+
+1. Source code (JavaScript + JSDoc)
+   ```txt
+   .
+   ├── server.js
+   └── lib/
+      ├── **/*.js
+      └── **/*.d.ts
+   ```
+2. Local typings (JSDoc)
+   ```txt
+   .
+   └── types.js
+   ```
+3. "Definitely Typed" definitions: \
+   (community-sourced _typings_ for popular packages)
+   ```bash
+   npm install --save-dev @types/express
+   ```
+   ```txt
+   .
+   └── node_modules/
+       └── @types/
+           └── express/
+               └── index.d.ts (community-sourced type definitions)
+   ```
+4. Type overrides (Type Definitions)
+   ```txt
+   .
+   └── typings/
+      └── express/
+         └── index.d.ts (TypeScript definitions)
+   ```
+   _Note: the `./typings` folder has three widely accepted naming conventions:
+   named `./@types`, `./types`._
+
+These **must be properly enumerated** in `tsconfig.json`:
+
+## Key Configuration
+
+1. `include` - this section must enumerate your _local types_ and _source code_:
+   ```json
+   {
+     "...",
+     "include": ["./types.js", "server.js", "lib/**/*.js"]
+   }
+   ```
+2. `compilerOptions.typeRoots` should specify your _local overrides_ and
+   _community type definitions_.
+   ```json
+   {
+       "compilerOptions": {
+           "typeRoots": [ "./typings", "./node_modules/@types" ],
+       },
+       "..."
+   }
+   ```
+3. `compilerOptions` must be changed from the default setting in order to make
+   `tsserver` behaver as a _linter for node_ rather than as a compiler for the
+   browser TypeScript:
+   ```js
+   {
+       "compilerOptions": {
+           "target": "ESNEXT",
+           "module": "commonjs",
+           // "lib": [],        // Leave this empty. All libs in 'target' will be loaded.
+           "allowJs": true, // read js files
+           "checkJs": true, // lint js files
+           "noEmit": true,  // don't transpile
+           "strict": true,  // turn on all TypeScript linting
+           "alwaysStrict": true, // assume "use strict"; whether or not its present
+           "esModuleInterop": true, // allow node-style require
+           "preserveSymlinks": false, // will work with basetag
+           // I don't understand these well enough to tell you how to use them,
+           // so I recommend that you don't (they may effect includes, excludes,
+           // and typeRoots in expected/unintended ways).
+           // "baseUrl": "./",
+           // "paths": {},
+           // "rootDirs": [],
+           "..."
+       },
+       "..."
+   }
+   ```
+   - Leave `compilerOptions.lib` commented out or empty. \
+     (otherwise it will override `target`)
+4. `compilerOptions.noImplicitAny` - this will strictly warn about all (untyped)
+   JavaScript. You probably won't this off at first on existing projects - so
+   that you only lint types that you've added and care about - and then turn it
+   on after you've got the low hanging fruit.
+
+   ```js
+   {
+       "compilerOptions": {
+
+           "noImplicitAny": true,
+           "..."
+       },
+
+       "..."
+   }
+   ```
+
+   If this is a _new_ project, it's fine to turn on right away.
+
+<!-- TODO
+           figure out if this is important:
+           "maxNodeModuleJsDepth": 3, // will resolve dependencies of dependencies
+-->
+
+## From Scratch
+
+If you wanted to start a brand-new project from scratch, these are the steps you
+would take:
+
 ```bash
 npm install -g typescript
+tsc --init
+
 npm install --save-dev @types/node
 npm install --save-dev @types/express
+```
+
+Here's the difference between the default `tsconfig.json` and the settings that
+work for this project:
+
+```diff
+diff --git a/tsconfig.json b/tsconfig.json
+index 35fc786..979a70d 100644
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -2,11 +2,11 @@
+   "compilerOptions": {
+
+     // "incremental": true,
+-    "target": "es5",
++    "target": "ESNEXT",
+     "module": "commonjs",
+     // "lib": [],
+-    // "allowJs": true,
+-    // "checkJs": true,
++    "allowJs": true,
++    "checkJs": true,
+     // "jsx": "preserve",
+     // "declaration": true,
+     // "declarationMap": true,
+@@ -17,13 +17,13 @@
+     // "composite": true,
+     // "tsBuildInfoFile": "./",
+     // "removeComments": true,
+-    // "noEmit": true,
++    "noEmit": true,
+     // "importHelpers": true,
+     // "downlevelIteration": true,
+     // "isolatedModules": true,
+
+     "strict": true,
+-    // "noImplicitAny": true,
++    "noImplicitAny": false,
+     // "strictNullChecks": true,
+     // "strictFunctionTypes": true,
+     // "strictBindCallApply": true,
+@@ -43,11 +43,11 @@
+     // "baseUrl": "./",
+     // "paths": {},
+     // "rootDirs": [],
+-    // "typeRoots": [],
++    "typeRoots": ["./typings", "node_modules/@types"],
+     // "types": [],
+     // "allowSyntheticDefaultImports": true,
+     "esModuleInterop": true,
+-    // "preserveSymlinks": true,
++    "preserveSymlinks": false,
+     // "allowUmdGlobalAccess": true,
+
+     // "sourceRoot": "",
+@@ -60,5 +60,7 @@
+
+     "skipLibCheck": true,
+     "forceConsistentCasingInFileNames": true
+-  }
++  },
++  "include": ["types.js", "server.js", "lib/**/*.js"],
++  "exclude": ["node_modules"]
+ }
 ```
 
 Pay close attention to your `tsconfig.json`.
@@ -58,10 +255,12 @@ Pay close attention to your `tsconfig.json`.
 Especially:
 
 - `lib` should be commented out. Don't use this.
-- `compilerOptions.typeRoots: [ "@types", "./node_modules/@types" ]`, should include both local and external type definitions
+- `compilerOptions.typeRoots: [ "@types", "./node_modules/@types" ]`, should
+  include both local and external type definitions
 - `include: ["**/*.js"]` should include ALL of your JavaScript files
 
-You may want to start with `"noImplicitAny": false` and change it to to `"noImplicitAny": true` once you've solved for all of the most basic errors.
+You may want to start with `"noImplicitAny": false` and change it to to
+`"noImplicitAny": true` once you've solved for all of the most basic errors.
 
 ## See ALL Warnings & Errors
 
@@ -71,12 +270,13 @@ Run `tsc` from the directory where `tsconfig.json` exists.
 tsc
 ```
 
-Make user that `include` is set properly to include all your code and JSDoc typse, and that `typeRoots` is set to include your type overrides.
+Make user that `include` is set properly to include all your code and JSDoc
+typse, and that `typeRoots` is set to include your type overrides.
 
 # Vim Users
 
-Assuming that you're using [`vim-ale`](https://webinstall.dev/vim-ale),
-the main option you need to modify is the list of linters.
+Assuming that you're using [`vim-ale`](https://webinstall.dev/vim-ale), the main
+option you need to modify is the list of linters.
 
 For example, you must have `tsserver`, and you may also want `jshint`:
 

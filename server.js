@@ -5,18 +5,25 @@ require("dotenv").config();
 let http = require("http");
 let express = require("express");
 let app = require("./lib/my-router.js").Router();
-let routes = require("./lib/app.js");
+let routes = require("./lib/routes.js");
+
+// tsserver will tell you if an imported file doesn't exist
+let doesntexist = require("./lib/doesntexist.js");
+console.log(doesntexist);
 
 if ("DEVELOPMENT" === process.env.ENV) {
   // set special options
 }
 
+// if I type cannot be inferred by its use,
+// it must be explicitly declared, like this:
 /** @type User */
 var user = {
-  // try turning one of these into a typo
-  given_name: "x",
-  family_name: "x",
-  favorite_book: "x",
+  // To see the linter in action,
+  // try renaming `given_name` to `first_name`.
+  given_name: "Jane",
+  family_name: "Doe",
+  favorite_book: "Harry Potter",
 };
 console.log(user);
 
@@ -30,6 +37,8 @@ function allUsers(req, res) {
   };
 
   // tsserver knows that 'first_name' can't possibly exist
+  // Note: we never told tsserver that user1 was a user,
+  // it implied it from how we use it down below
   console.log(user1.first_name);
 
   // tsserver knows that a match can be null
@@ -47,6 +56,9 @@ function allUsers(req, res) {
 }
 
 // pretend this is our login function
+// Note: we have to type this explicitly because app.use can accept multiple
+// function signatures and so the type cannot be inferred
+/** @type {import('express').Handler} */
 function requireUser(req, res, next) {
   // ... verify req.headers["authorization"]
 
@@ -56,18 +68,36 @@ function requireUser(req, res, next) {
     favorite_movie: "Jurassic Park",
   };
 
-  // To fix this error, make favorite_book optional, like favorite_movie
-  // see ./types.js
+  // To fix this error, make `favorite_book` optional,
+  // just like `favorite_movie` is optional.
+  // See ./types.js
   req.user = user;
+
+  // To fix this error, go add req.admin as a boolean.
+  // See ./typings/express/index.d.ts
   req.admin = true;
+
+  next();
 }
 
 app.use("/", requireUser);
 app.get("/hello", routes.hello);
 app.get("/users", allUsers);
-// You should get a tsserver linter error here:
-// goodbye is not defined in our routes file
-// (go define it to fix this)
+
+// tsserver knows this function's type implicitly (unlike those above).
+// Because it's used directly, inline, it doesn't need type annotation.
+app.get("/implicitly-typed", function (req, res, next) {
+  // To fix this error, just check that the property exists
+  //if (req.user) {
+  console.log(req.user.given_name);
+  //}
+  // note:
+
+  next();
+});
+
+// To fix this error, go create a route for `goodbye`.
+// See ./lib/routes.js
 app.get("/goodbye", routes.goodbye);
 
 // Express error handlers sometimes need a type annotation - but that's okay. They're rare.
