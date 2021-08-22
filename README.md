@@ -224,8 +224,33 @@ index 35fc786..979a70d 100644
  }
 ```
 
-You may want to start with `"noImplicitAny": false` and change it to to
-`"noImplicitAny": true` once you've solved for all of the most basic errors.
+Again, **the #1 thing** is to make sure that `include` and `typeRoots` matches
+how your project is set up. For this project it looks like this:
+
+```js
+{
+    "compilerOptions": {
+        // ...
+       "typeRoots": ["./typings", "node_modules/@types"],
+    },
+    "include": ["types.js", "server.js", "lib/**/*.js"],
+    // ...
+}
+```
+
+If you decide to follow a different convention, name your things accordingly.
+This is also valid, if it matches your project:
+
+```js
+{
+    "compilerOptions": {
+        // ...
+       "typeRoots": ["./@types", "node_modules/@types"],
+    },
+    "include": ["**/*.js"],
+    // ...
+}
+```
 
 ## TypeScript Checker CLI
 
