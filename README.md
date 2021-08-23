@@ -13,10 +13,81 @@ This project has purposefully half-baked - meaning that errors exist on purpose
 
 <!-- TODO Key Benefits, VS Code -->
 
+- Key Benefits
+- Prerequisites
+- Starter / Demo
 - Key Components
 - Key Configuration
 - Manual "From Scratch"
 - Vim Configuration
+
+## Prerequisites
+
+- `git`
+- `node`
+- `typescript` (and `jshint`)
+- `vim-ale` (or VS Code)
+
+You'll need `node`, `typescript` (`tsserver`), and `jshint`:
+
+```bash
+curl https://webinstall.dev/node@16 | bash
+export PATH="${HOME}/.local/opt/node/bin:${PATH}"
+
+npm install -g typescript
+npm install -g jshint
+```
+
+If you're using `vim` you'll also want
+[`vim-ale`](https://webinstall.dev/vim-ale) (and probably the full set of
+[`vim-essentials`](https://webinstall.dev/vim-essentials)), and update
+`~/.vimrc` to use `typescript` (and `jshint`, if desired) as the linter.
+
+```bash
+curl https://webinstall.dev/vim-ale | bash
+```
+
+```vim
+" also use tserver for linting JavaScript
+let g:ale_linters = {
+\  'javascript': ['tsserver', 'jshint']
+\}
+
+" enable linting when opening a file
+let g:ale_lint_on_enter = 1
+```
+
+Alternatively, you can let `vim` load per-project config `.vimrc`:
+
+```vim
+set exrc
+set secure
+```
+
+## Starter / Demo
+
+Clone the repo:
+
+```bash
+git clone https://github.com/BeyondCodeBootcamp/jsdoc-typescript-starter
+```
+
+Enter and install the dependencies (mostly type definitions):
+
+```bash
+pushd ./jsdoc-typescript-starter/
+
+npm ci
+```
+
+Now open `server.js`, save (to kick off the linter), and be amazed!
+
+```bash
+vim server.js
+```
+
+Note: `tsserver` can take 10 - 30 seconds to boot on a VPS, and may not start
+until after your first save (`:w`) in `vim`.
 
 ## Key Components
 
@@ -107,7 +178,6 @@ These **must be properly enumerated** in `tsconfig.json`:
            "allowJs": true, // read js files
            "checkJs": true, // lint js files
            "noEmit": true,  // don't transpile
-           "strict": true,  // turn on all TypeScript linting
            "alwaysStrict": true, // assume "use strict"; whether or not its present
            "esModuleInterop": true, // allow node-style require
            "preserveSymlinks": false, // will work with basetag

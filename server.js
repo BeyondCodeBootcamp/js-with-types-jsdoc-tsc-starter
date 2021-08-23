@@ -7,7 +7,7 @@ let express = require("express");
 let app = require("./lib/my-router.js").Router();
 let routes = require("./lib/routes.js");
 
-// tsserver will tell you if an imported file doesn't exist
+// ⚠️ tsserver will tell you if an imported file doesn't exist
 let doesntexist = require("./lib/doesntexist.js");
 console.log(doesntexist);
 
@@ -36,20 +36,21 @@ function allUsers(req, res) {
     favorite_book: "Oh, The Places You'll Go!",
   };
 
-  // tsserver knows that 'first_name' can't possibly exist
+  // ⚠️ tsserver knows that 'first_name' can't possibly exist
   // Note: we never told tsserver that user1 was a user,
   // it implied it from how we use it down below
   console.log(user1.first_name);
 
-  // tsserver knows that a match can be null
+  // ⚠️ tsserver knows that a match can be null
   console.log(user1.given_name.match(/foo/)[1]);
 
-  // See the error message below to fix this
+  // The error message below applies to this, which is implicitly typed as a User
   let user2 = {
     given_name: "Banana",
     favorite_movie: "Jurassic Park",
   };
 
+  // ⚠️ See above to fix his
   /**@type {Array<User>}*/
   let result = [user1, user2];
   res.json(result);
@@ -68,12 +69,12 @@ function requireUser(req, res, next) {
     favorite_movie: "Jurassic Park",
   };
 
-  // To fix this error, make `favorite_book` optional,
+  // ⚠️ To fix this error, make `favorite_book` optional,
   // just like `favorite_movie` is optional.
   // See ./types.js
   req.user = user;
 
-  // To fix this error, go add req.admin as a boolean.
+  // ⚠️ To fix this error, go add req.admin as a boolean.
   // See ./typings/express/index.d.ts
   req.admin = true;
 
@@ -87,7 +88,7 @@ app.get("/users", allUsers);
 // tsserver knows this function's type implicitly (unlike those above).
 // Because it's used directly, inline, it doesn't need type annotation.
 app.get("/implicitly-typed", function (req, res, next) {
-  // To fix this error, just check that the property exists
+  // ⚠️ To fix this error, just check that the property exists
   //if (req.user) {
   console.log(req.user.given_name);
   //}
@@ -96,7 +97,7 @@ app.get("/implicitly-typed", function (req, res, next) {
   next();
 });
 
-// To fix this error, go create a route for `goodbye`.
+// ⚠️ To fix this error, go create a route for `goodbye`.
 // See ./lib/routes.js
 app.get("/goodbye", routes.goodbye);
 
