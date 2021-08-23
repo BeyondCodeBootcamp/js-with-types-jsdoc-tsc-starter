@@ -95,18 +95,25 @@ Enter and install the dependencies (mostly type definitions):
 
 ```bash
 pushd ./jsdoc-typescript-starter/
-
 npm ci
 ```
 
-Now open `server.js`, save (to kick off the linter), and be amazed!
+Run `tsc` for a quick sanity check: \
+(you should see a handful of errors scroll by)
+
+```bash
+tsc
+```
+
+With all that working, now open `server.js`, save (to kick off the linter), and
+be amazed!
 
 ```bash
 vim server.js
 ```
 
-Note: `tsserver` can take 10 - 30 seconds to boot on a VPS, and may not start
-until after your first save (`:w`) in `vim`.
+_Note: `tsserver` can take 10 - 30 seconds to boot on a VPS, and may not start
+until after your first save (`:w`) in `vim`._
 
 ## Key Components
 
