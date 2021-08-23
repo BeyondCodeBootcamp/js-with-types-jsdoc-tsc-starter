@@ -4,7 +4,7 @@
  * @typedef {Object} User
  * @property {string} given_name
  * @property {string} family_name
- * @property [string] favorite_movie
+ * @property {string} [favorite_movie]
  * @property {string} favorite_book
  */
 
