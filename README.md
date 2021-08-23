@@ -21,6 +21,25 @@ This project has purposefully half-baked - meaning that errors exist on purpose
 - Manual "From Scratch"
 - Vim Configuration
 
+## Key Benefits
+
+You get benefits from both **explicit and implicit** type linting.
+
+Here are some of the extra checks `tsserver` will give you that you wouldn't get
+from `jshint` alone:
+
+- [x] `require`ing a file that doesn't exist
+- [x] access an `undefined` property
+- [x] a property is only defined in an `if { ... }` condition
+- [x] a method on a value from a function that sometimes returns `null`
+- [x] IntelliSense / AutoCompletion
+
+Even **if you don't use JSDoc** (or TypeScript Definitions) to add explicit
+types, **you still get the benefits** of code analysis.
+
+If you do add JSDoc type annotations to your JavaScript, you'll get even more
+specific errors.
+
 ## Prerequisites
 
 - `git`
