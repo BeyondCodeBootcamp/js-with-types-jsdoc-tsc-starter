@@ -57,6 +57,9 @@ npm install -g typescript
 npm install -g jshint
 ```
 
+If you're using **VS Code**, type linting is built-in. You don't need any
+additional plugins, just configure `tsconfig.json` as mentioned below.
+
 If you're using `vim` you'll also want
 [`vim-ale`](https://webinstall.dev/vim-ale) (and probably the full set of
 [`vim-essentials`](https://webinstall.dev/vim-essentials)), and update
@@ -71,9 +74,6 @@ curl https://webinstall.dev/vim-ale | bash
 let g:ale_linters = {
 \  'javascript': ['tsserver', 'jshint']
 \}
-
-" enable linting when opening a file
-let g:ale_lint_on_enter = 1
 ```
 
 Alternatively, you can let `vim` load per-project config `.vimrc`:
@@ -82,6 +82,8 @@ Alternatively, you can let `vim` load per-project config `.vimrc`:
 set exrc
 set secure
 ```
+
+For other options see [.vimrc](/.vimrc).
 
 ## Starter / Demo
 
@@ -348,7 +350,7 @@ This is also valid, if it matches your project:
 }
 ```
 
-## TypeScript Checker CLI
+### TypeScript Checker CLI
 
 `tsc` can show you the same errors that you'll see in VS Code or vim, but in all
 files across your project at once.
@@ -363,7 +365,12 @@ If you don't get error output, then ake user that `include` is set properly to
 include all your code and JSDoc types, and that `typeRoots` is set to include
 your type overrides.
 
-## Vim Configuration
+### VS Code Configuration
+
+VS Code has TypeScript built-in, no configuration is necessary aside from the
+`tsconfig.json`.
+
+### Vim Configuration
 
 Assuming that you're using [`vim-ale`](https://webinstall.dev/vim-ale), the main
 option you need to modify is the list of linters.
