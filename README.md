@@ -9,6 +9,8 @@ TypeScript Kool-Aid, you're in the right place.
 This project has purposefully half-baked - meaning that errors exist on purpose
 (with explanatory comments) - so that you can see the type linting in action!
 
+<kbd><img width="819" alt="tsc type linting in action" src="https://user-images.githubusercontent.com/122831/130413852-cba0eed3-7a1c-4c49-9d0f-f8bf1716cbf7.png"></kbd>
+
 ## Table of Contents
 
 <!-- TODO Key Benefits, VS Code -->
