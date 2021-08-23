@@ -19,6 +19,7 @@
 let g:ale_linters = {
 \  'javascript': ['tsserver', 'jshint']
 \}
+let g:ale_lint_on_enter = 1
 
 """"""""""""""""""""
 " For IntelliSense "
@@ -37,7 +38,7 @@ let g:ale_completion_autoimport = 1
 " To lessen this, you can elect to have it only lint when you save
 
 " Don't fire up the tsserver linter until you save
-let g:ale_lint_on_save = 0
+"let g:ale_lint_on_save = 1
 
 " Don't fire up tsserver linting until you've saved once
-let g:ale_lint_on_enter = 0
+"let g:ale_lint_on_enter = 0
