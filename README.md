@@ -6,6 +6,8 @@
 If you'd like to get the benefits of Type Linting without drinking the
 TypeScript Kool-Aid, you're in the right place.
 
+<a href="https://www.youtube.com/watch?v=TPoxoaS7N3w&list=PLxki0D-ilnqZfyo2dZe11ZNGP7RJxJcoA&index=18" target="_blank"><img src="https://user-images.githubusercontent.com/122831/130662033-d730d789-93b3-44b3-87fd-360b1168a634.jpg"></a>
+
 This project has purposefully half-baked - meaning that errors exist on purpose
 (with explanatory comments) - so that you can see the type linting in action!
 
