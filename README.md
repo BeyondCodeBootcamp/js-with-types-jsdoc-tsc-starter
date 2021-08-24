@@ -20,6 +20,7 @@ This project has purposefully half-baked - meaning that errors exist on purpose
 - Starter / Demo
 - Key Components
 - Key Configuration
+- JSDoc Cheat Sheet
 - Manual "From Scratch"
 - Vim Configuration
 
@@ -246,6 +247,85 @@ These **must be properly enumerated** in `tsconfig.json`:
            figure out if this is important:
            "maxNodeModuleJsDepth": 3, // will resolve dependencies of dependencies
 -->
+
+## JSDoc Cheat Sheet
+
+See [./types.js](/types.js).
+
+How to define a type and cast, and object as that type:
+
+```js
+/**
+ * @typedef Thing
+ * @property {string} id
+ * @property {number} index
+ * @property {Date} expires
+ * @property {function} callback
+ */
+
+/**@type Thing*/
+let thing = {
+  id: 'id',
+  index: 1,
+  expires: new Date(),
+  callback: function () {}
+}
+```
+
+How to define a function
+
+```js
+/**
+ * Does some stuff
+ * @param {string} id
+ * @returns {Promise<Thing>}
+ */
+async function doStuff(id) {
+  // do stuff
+  // ...
+  return await fetchthing;
+}
+```
+
+How to define a hashmap / dictionary / plain object:
+
+```js
+/**
+ * @typedef Thing
+ * ...
+ * @property {Record<string, any>} stuff
+ */
+```
+
+How to define an optional property, multiple types, and union type:
+
+```js
+/**
+ * @typedef Thing
+ * ...
+ * @property {string} [middle_name]
+ * @property {Array<Thing> | null} friends
+ */
+```
+
+```js
+/**
+ * @typedef Foo
+ * @property {string} foo
+ */
+ 
+/**
+ * @typedef Bar
+ * @property {string} bar
+ */
+
+/** @type {Foo & Bar} */
+var foobar = { foo: "foo", bar: "bar" };
+
+/** @typedef {Foo & Bar} FooBar */
+/** @type {FooBar} */
+var foobar = { foo: "foo", bar: "bar" };
+```
 
 ## From Scratch
 
