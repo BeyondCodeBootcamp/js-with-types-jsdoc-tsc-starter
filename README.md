@@ -202,7 +202,7 @@ These **must be properly enumerated** in `tsconfig.json`:
 3. `compilerOptions` must be changed from the default setting in order to make
    `tsserver` behaver as a _linter for node_ rather than as a compiler for the
    browser TypeScript:
-   ```js
+   ```json5
    {
        "compilerOptions": {
            "target": "ESNEXT",
@@ -212,7 +212,8 @@ These **must be properly enumerated** in `tsconfig.json`:
            "checkJs": true, // lint js files
            "noEmit": true,  // don't transpile
            "alwaysStrict": true, // assume "use strict"; whether or not its present
-           "esModuleInterop": true, // allow node-style require
+           "moduleResolution": "node", // expect node_modules resolution
+           "esModuleInterop": true, // allow commonjs-style require
            "preserveSymlinks": false, // will work with basetag
            // I don't understand these well enough to tell you how to use them,
            // so I recommend that you don't (they may effect includes, excludes,
@@ -382,6 +383,8 @@ index 35fc786..979a70d 100644
      // "strictFunctionTypes": true,
      // "strictBindCallApply": true,
 @@ -43,11 +43,11 @@
+-    // "moduleResolution": "node",
++    "moduleResolution": "node",
      // "baseUrl": "./",
      // "paths": {},
      // "rootDirs": [],
