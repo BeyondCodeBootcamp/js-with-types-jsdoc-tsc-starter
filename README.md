@@ -176,6 +176,7 @@ We could break this down into 4 key components, which must be referenced in your
    - let axios = require('axios');
    + let axios = require('axios').default;
    ```
+   (there are also some **special cases**, see below for examples)
 4. "Definitely Typed" definitions: \
    (community-sourced _typings_ for popular packages)
    ```bash
@@ -267,11 +268,21 @@ These **must be properly enumerated** in `tsconfig.json`:
    If this is a _new_ project, it's fine to turn on right away.
 5. You may need to switch some `require`s to use the "default import", for example:
    ```diff
+     // Example: axios is this way
    - let axios = require('axios');
    + let axios = require('axios').default;
+
+    // Example: some modules are typed incorrectly and require some coaxing
+   - let axiosRetry = require('axios-retry');
+   + //@ts-ignore
+   + require('axios-retry').default = require('axios-retry');
+   + let axiosRetry = require('axios-retry').default;
    - let Papa = require('papaparse');
+   + //@ts-ignore
+   + require('papaparse').default = require('papaparse');
    + let Papa = require('papaparse').default;
    ```
+   See https://github.com/DefinitelyTyped/DefinitelyTyped/discussions/55420 to learn more.
 
 <!-- TODO
            figure out if this is important:
