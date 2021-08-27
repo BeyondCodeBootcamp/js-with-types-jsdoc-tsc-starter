@@ -132,7 +132,9 @@ A typical project will look something like this:
 ├── lib/
 │  ├── **/*.js
 │  └── **/*.d.ts
-├── node_modules/@types/ ("Definitely Typed" typings)
+├── node_modules/
+│  ├── @types/ ("Definitely Typed" typings)
+│  └── <whatever>/index.d.ts (may require "default imports")
 ├── tsconfig.json (JSON5)
 ├── typings/
 │  └── express/
@@ -156,7 +158,25 @@ We could break this down into 4 key components, which must be referenced in your
    .
    └── types.js
    ```
-3. "Definitely Typed" definitions: \
+3. Typed Modules: \
+   (modules that ship with types)
+   ```bash
+   npm install --save axios
+   ```
+   ```txt
+   .
+   └── node_modules/
+       └── axios/
+           └── index.d.ts (may be compiled from TS)
+   ```
+   Note: for modules that ship with types you may need to change how you require
+   them to use the "default exports", (otherwise you may get _really_ weird type
+   errors about missing methods, etc):
+   ```diff
+   - let axios = require('axios');
+   + let axios = require('axios').default;
+   ```
+4. "Definitely Typed" definitions: \
    (community-sourced _typings_ for popular packages)
    ```bash
    npm install --save-dev @types/express
@@ -168,7 +188,7 @@ We could break this down into 4 key components, which must be referenced in your
            └── express/
                └── index.d.ts (community-sourced type definitions)
    ```
-4. Type overrides (Type Definitions)
+5. Type overrides (Type Definitions)
    ```txt
    .
    └── typings/
@@ -245,6 +265,13 @@ These **must be properly enumerated** in `tsconfig.json`:
    ```
 
    If this is a _new_ project, it's fine to turn on right away.
+5. You may need to switch some `require`s to use the "default import", for example:
+   ```diff
+   - let axios = require('axios');
+   + let axios = require('axios').default;
+   - let Papa = require('papaparse');
+   + let Papa = require('papaparse').default;
+   ```
 
 <!-- TODO
            figure out if this is important:
