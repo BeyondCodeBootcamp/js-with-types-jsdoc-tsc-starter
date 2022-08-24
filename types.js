@@ -1,3 +1,6 @@
+// Workaround: `tsc` won't export typedefs unless `module.exports` is present
+module.exports._typesOnly = true;
+
 // Package-Scoped Types
 
 // Rather than creating class files, you can define types here and annotate them
